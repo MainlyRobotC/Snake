@@ -12,10 +12,13 @@ namespace OliverSnake
 {
     public partial class Form1 : Form
     {
+
+        List<SnakePiece> snakePieces;
         Graphics gfx;
         Bitmap bitmap;
+        Food food;
+        SnakePiece body;
 
-        Body body = new Body(50, 50, 500, 300, 0, 0, Brushes.Cyan);
         public Form1()
         {
             InitializeComponent();
@@ -26,6 +29,11 @@ namespace OliverSnake
         private void Form1_Load(object sender, EventArgs e)
         {
             pictureBox1.Image = bitmap;
+            food = new Food(30, 30, 0, 0, Brushes.Red);
+            snakePieces = new List<SnakePiece>();
+            snakePieces.Add(new SnakePiece(50, 50, 500, 300, 0, 0, Brushes.Cyan));
+
+            food.newPos();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -33,18 +41,26 @@ namespace OliverSnake
             gfx.Clear(BackColor);
             body.draw(gfx);
             body.update(ClientSize);
+            food.draw(gfx);
             pictureBox1.Image = bitmap;
+
+            if(body.hitbox.IntersectsWith(food.hitbox))
+            {
+                body.length++;
+                food.newPos();
+                label2.Text = $"Score = {body.length}";
+            }
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Left)
+            if (e.KeyCode == Keys.Left)
             {
                 body.speedX = -50;
                 body.speedY = 0;
             }
 
-            if(e.KeyCode == Keys.Up)
+            if (e.KeyCode == Keys.Up)
             {
                 body.speedX = 0;
                 body.speedY = -50;
@@ -62,7 +78,7 @@ namespace OliverSnake
                 body.speedY = 0;
             }
 
-            if(body.x < 0 || body.x - body.width > ClientSize.Width || body.y < 0 || body.y - body.height > ClientSize.Height)
+            if (body.x < 0 || body.x - body.width > ClientSize.Width || body.y < 0 || body.y - body.height > ClientSize.Height)
             {
                 label1.Text = "YOU LOSE! MWAHAHAHA";
                 body.x = ClientSize.Width / 2;

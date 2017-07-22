@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OliverSnake
 {
-    class Body
+    class SnakePiece
     {
         public int width;
         public int height;
@@ -16,10 +16,11 @@ namespace OliverSnake
         public int speedX;
         public int speedY;
         public Brush brush;
+        public int length;
 
-        Rectangle hitbox;
+        public Rectangle hitbox;
 
-        public Body(int width, int height, int x, int y, int speedX, int speedY, Brush brush)
+        public SnakePiece(int width, int height, int x, int y, int speedX, int speedY, Brush brush)
         {
             this.width = width;
             this.height = height;
@@ -28,12 +29,16 @@ namespace OliverSnake
             this.speedX = speedX;
             this.speedY = speedY;
             this.brush = brush; 
+            hitbox = new Rectangle(x,y,width,height);
         }
 
         public void update(Size ClientSize)
         {
             x += speedX;
             y += speedY;
+
+            hitbox.X = x;
+            hitbox.Y = y;
         }
 
         public void draw(Graphics gfx)
