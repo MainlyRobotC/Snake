@@ -9,41 +9,67 @@ namespace OliverSnake
 {
     class SnakePiece
     {
-        public int width;
-        public int height;
-        public int x;
-        public int y;
-        public int speedX;
-        public int speedY;
-        public Brush brush;
-        public int length;
+        public int Width;
+        public int Height;
+        public int X;
+        public int Y;
+        public Brush Brush;
+        public int Length;
+        private int direction;
 
-        public Rectangle hitbox;
-
-        public SnakePiece(int width, int height, int x, int y, int speedX, int speedY, Brush brush)
+        public Rectangle Hitbox
         {
-            this.width = width;
-            this.height = height;
-            this.x = x;
-            this.y = y;
-            this.speedX = speedX;
-            this.speedY = speedY;
-            this.brush = brush; 
-            hitbox = new Rectangle(x,y,width,height);
+            get { return new Rectangle(X, Y, Width, Height); }
+        }
+
+        public int Direction
+        {
+            get
+            {
+                return direction;
+            }
+
+            set
+            {
+                direction = value;
+            }
+        }
+
+        public SnakePiece(int width, int height, int x, int y, Brush brush)
+        {
+            this.Width = width;
+            this.Height = height;
+            this.X = x;
+            this.Y = y;
+            this.Brush = brush;          
         }
 
         public void update(Size ClientSize)
         {
-            x += speedX;
-            y += speedY;
+            if (direction == 1)
+            {
+                X -= Width;
+            }
 
-            hitbox.X = x;
-            hitbox.Y = y;
+            if (direction == 2)
+            {
+                Y -= Height;
+            }
+
+            if (direction == 3)
+            {
+                Y += Height;
+            }
+
+            if (direction == 4)
+            {
+                X += Width;
+            }
         }
 
         public void draw(Graphics gfx)
         {
-            gfx.FillRectangle(brush, x, y, width, height);
+            gfx.FillRectangle(Brush, X, Y, Width, Height);
         }
     }
 }
